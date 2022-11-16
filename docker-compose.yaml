@@ -285,6 +285,7 @@ services:
       - 10000:10000
     volumes:
       - ./azurite:/workspace
+    restart: always
 
 volumes:
   postgres-db-volume:
