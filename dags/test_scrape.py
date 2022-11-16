@@ -10,7 +10,7 @@ from airflow.providers.microsoft.azure.transfers.local_to_wasb import LocalFiles
 log = logging.getLogger(__name__)
 
 PATH_TO_UPLOAD_FILE = '/'
-DAG_ID = "example_local_to_wasb"
+DAG_ID = "upload_local_file_to_wasb"
 FILE_NAME = '/opt/airflow/test.txt'
 
 with DAG(
@@ -31,6 +31,7 @@ with DAG(
         try:
             fp = open(FILE_NAME, 'wt')
             fp.write('hello world')
+            fp.write(dt_string)
             fp.close()
         except Exception as e:
             raise AirflowException(e)
