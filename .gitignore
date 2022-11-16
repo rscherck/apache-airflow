@@ -1,0 +1,5 @@
+/azurite
+/logs
+.env
+
+/dags/__pycache__
