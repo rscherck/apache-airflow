@@ -8,6 +8,8 @@ docker compose up airflow-init
 Running the environment
 docker compose up
 
+http://localhost:8080
+
 ```
 
 ```
