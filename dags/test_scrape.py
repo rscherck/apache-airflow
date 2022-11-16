@@ -9,7 +9,6 @@ from airflow.providers.microsoft.azure.transfers.local_to_wasb import LocalFiles
 
 log = logging.getLogger(__name__)
 
-PATH_TO_UPLOAD_FILE = '/'
 DAG_ID = "upload_local_file_to_wasb"
 FILE_NAME = '/opt/airflow/test.txt'
 
