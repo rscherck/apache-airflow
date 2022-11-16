@@ -24,6 +24,9 @@ with DAG(
     log.info(os.listdir(os.curdir))
     log.info('*****************************')
 
+    dt = datetime.utcnow()
+    dt_string = dt.strftime("%Y.%m.%d_%H.%M")
+
     def create_file():
         try:
             fp = open(FILE_NAME, 'wt')
@@ -47,14 +50,14 @@ with DAG(
         file_path=FILE_NAME,
         wasb_conn_id='azure_blob',
         container_name='inputdata',
-        blob_name='test.txt',
+        blob_name=r"test-{}.txt".format(dt_string),
         create_container=True)
 
     task_delete_file = PythonOperator(
         task_id='delete_file',
         python_callable=delete_file
     )
-
+    
     task_create_file >> task_upload_file_to_blob_storage >> task_delete_file
 
 
