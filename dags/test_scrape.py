@@ -1,11 +1,14 @@
 import os
 import logging
+
 from datetime import datetime
 
 from airflow.models import DAG
 from airflow.exceptions import AirflowException
 from airflow.operators.python import PythonOperator
 from airflow.providers.microsoft.azure.transfers.local_to_wasb import LocalFilesystemToWasbOperator
+
+from common_packages.process import Process
 
 log = logging.getLogger(__name__)
 
@@ -39,7 +42,10 @@ with DAG(
         try:
             os.remove(FILE_NAME)
         except Exception as e:
-            raise AirflowException(e)     
+            raise AirflowException(e)  
+
+    def do_work():
+        Process.get_data()
 
     task_create_file = PythonOperator(
         task_id='create_file',
@@ -54,9 +60,14 @@ with DAG(
         create_container=True
     )
 
+    task_process = PythonOperator(
+        task_id='process',
+        python_callable=do_work
+    )
+
     task_delete_file = PythonOperator(
         task_id='delete_file',
         python_callable=delete_file
     )
     
-    task_create_file >> task_upload_file_to_blob_storage >> task_delete_file
+    task_create_file >> task_upload_file_to_blob_storage >> task_process >> task_delete_file

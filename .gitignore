@@ -1,5 +1,4 @@
+__pycache__/
 /azurite
 /logs
 .env
-
-/dags/__pycache__

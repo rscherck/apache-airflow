@@ -7,6 +7,6 @@
     "editor.formatOnSave": true,
     "python.formatting.provider": "autopep8",
     "python.linting.lintOnSave": true,
-    "python.linting.enabled": false, // turning on causing duplicate linting warning/errors
+    "python.linting.enabled": true, // turning on causing duplicate linting warning/errors
     "python.linting.pylintEnabled": true, // turns on pylint library
 }
