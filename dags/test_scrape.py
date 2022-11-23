@@ -8,7 +8,7 @@ from airflow.exceptions import AirflowException
 from airflow.operators.python import PythonOperator
 from airflow.providers.microsoft.azure.transfers.local_to_wasb import LocalFilesystemToWasbOperator
 
-from common_packages.process import Process
+from common.process import Process
 
 log = logging.getLogger(__name__)
 
@@ -42,7 +42,7 @@ with DAG(
         try:
             os.remove(FILE_NAME)
         except Exception as e:
-            raise AirflowException(e)  
+            raise AirflowException(e)
 
     def do_work():
         Process.get_data()
@@ -53,12 +53,13 @@ with DAG(
     )
 
     task_upload_file_to_blob_storage = LocalFilesystemToWasbOperator(task_id="upload_file",
-        file_path=FILE_NAME,
-        wasb_conn_id='azure_blob',
-        container_name='inputdata',
-        blob_name=r"test-{}.txt".format(dt_string),
-        create_container=True
-    )
+                                                                     file_path=FILE_NAME,
+                                                                     wasb_conn_id='azure_blob',
+                                                                     container_name='inputdata',
+                                                                     blob_name=r"test-{}.txt".format(
+                                                                         dt_string),
+                                                                     create_container=True
+                                                                     )
 
     task_process = PythonOperator(
         task_id='process',
@@ -69,5 +70,5 @@ with DAG(
         task_id='delete_file',
         python_callable=delete_file
     )
-    
+
     task_create_file >> task_upload_file_to_blob_storage >> task_process >> task_delete_file

@@ -1,0 +1,32 @@
+version: '3.5'
+
+services:
+  postgres:
+    image: postgres:14.2-alpine
+    env_file:
+       - .env
+    volumes:
+      - ./scripts/postgres/:/docker-entrypoint-initdb.d/
+ 
+  server:
+    build: 
+      context: .
+    env_file:
+       - .env
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+      - azurite
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - ./plugins:/opt/airflow/plugins
+
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite
+    command: "azurite-blob --blobHost 0.0.0.0 --blobPort 10000 --loose --location /workspace --debug /workspace/debug.log"
+    ports:
+      - 10000:10000
+    volumes:
+      - ./azurite:/workspace
