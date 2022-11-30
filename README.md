@@ -8,7 +8,7 @@ https://airflow.apache.org/docs/apache-airflow/stable/index.html
 
 ```
 Initialization
-docker compose up airflow-init
+docker compose up --build
 
 ```
 
@@ -22,6 +22,6 @@ http://localhost:8080
 
 ```
 Cleaning up
-docker compose down --volumes --rmi all
+docker compose down --volumes --remove-orphans
 
 ```
