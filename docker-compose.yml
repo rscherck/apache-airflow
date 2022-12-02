@@ -3,6 +3,7 @@ version: '3.5'
 x-airflow-common:
   &airflow-common
   build: .
+  platform: linux/amd64
   environment:
     &airflow-common-env
     AIRFLOW__CORE__EXECUTOR: CeleryExecutor
